@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour
     public float dashDuration = 0.5f; 
     public float dashCooldown = 1.0f;
     public float dashDistance = 5.0f;
-
+    public bool damage_;
+    public int empuje;
     [Header ("Proyectil")]
     public Transform firePoint;  // El punto desde donde se disparará el proyectil
     public GameObject projectilePrefab;  // Prefab del proyectil
@@ -31,6 +32,19 @@ public class PlayerController : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+    }
+    public void Damage*()
+    {
+        if (damage_)
+        {
+            transform.Translate(Vector3.rigth*empuje*time.deltaTime,space.world)
+            
+            LeroyFake.Shoot = false;
+        }
+    }
+    public void Finis_Damage()
+    {
+        damage_ = false;
     }
 
     void Update()
@@ -122,4 +136,15 @@ public class PlayerController : MonoBehaviour
         scale.x *= -1; 
         transform.localScale = scale;
     }
+    void fixedupdate()
+    {
+        if (!damage_)
+        (
+            moveInput();
+
+
+        )
+        
+    }
+    
 }
