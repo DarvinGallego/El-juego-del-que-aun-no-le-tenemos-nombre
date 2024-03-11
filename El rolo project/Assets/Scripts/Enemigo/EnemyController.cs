@@ -7,18 +7,26 @@ using Random = UnityEngine.Random;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] public Transform PJ;
+    [Header("Variables de distancia al jugador")]
+    public Transform PJ;
     [SerializeField] private float distancia;
-    [Range(0, 2)][SerializeField] private float distanciaLimite;        
+    [Range(0, 2)][SerializeField] private float distanciaLimite;
+
+    [Header("Variables de tiempo de patrullaje")]
+    public int rutina;
     [SerializeField] private float cronometro;
     [SerializeField] private float cronoregulador;
+
+    [Header("Variables de ataque")]
     [Range(0, 1)][SerializeField] private float rangoAtaque;
-    [SerializeField] private bool puedeAtacar;
-    [SerializeField] private int direccionGiro;
     public Collider2D hit;
-    public int rutina;
+    [SerializeField] private bool puedeAtacar;
+
+    [Header("Variables generales")]
     public float velocidad;
     public float velocidadLimite;
+    [SerializeField] private int direccionGiro;
+    public bool recibioDaño;
     public EstadoEnemigo estado = EstadoEnemigo.Patrullando;
     private Animator animator;
 
@@ -32,19 +40,25 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         distancia = Vector2.Distance(transform.position, PJ.position);
-        animator.SetFloat("Distancia", distancia);
 
-        if (distancia < distanciaLimite && distancia > rangoAtaque)
+        if (!recibioDaño)
         {
-            estado = EstadoEnemigo.Persiguiendo;
+            if (distancia < distanciaLimite && distancia > rangoAtaque)
+            {
+                estado = EstadoEnemigo.Persiguiendo;
+            }
+            else if (distancia > distanciaLimite)
+            {
+                estado = EstadoEnemigo.Patrullando;
+            }
+            else if (distancia < rangoAtaque)
+            {
+                estado = EstadoEnemigo.Atacando;
+            }
         }
-        else if (distancia > distanciaLimite)
+        else
         {
-            estado = EstadoEnemigo.Patrullando;
-        }
-        else if(distancia < rangoAtaque)
-        {
-            estado = EstadoEnemigo.Atacando;
+            estado = EstadoEnemigo.Herido;
         }
 
         switch (estado)
@@ -58,8 +72,8 @@ public class EnemyController : MonoBehaviour
             case EstadoEnemigo.Atacando:
                 Atacar();
                 break;
-            case EstadoEnemigo.Buscando:
-                //Buscar();
+            case EstadoEnemigo.Herido:
+                Herido();
                 break;
         }
     }
@@ -128,6 +142,20 @@ public class EnemyController : MonoBehaviour
         }
 
         animator.SetBool("walk", true);     
+    }
+
+    public void Herido()
+    {
+        animator.SetBool("walk", false);
+        animator.SetBool("atack", false);
+        animator.SetBool("damaged", true);
+    }
+
+    public void FinHerido()
+    {
+        recibioDaño = false;
+        animator.SetBool("damaged", false);
+        estado = EstadoEnemigo.Persiguiendo;
     }
 
     public void Atacar()

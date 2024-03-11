@@ -2,23 +2,26 @@ using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
-    public float speed = 5.0f;
+    public float speed;
+    [SerializeField] private float timeLimit;
+    [SerializeField] private float timeDestroy;
 
     void Update()
     {
-        // Mover el proyectil hacia adelante
         transform.Translate(Vector2.right * speed * Time.deltaTime);
+        Destruir();
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         // Comprobar la etiqueta del objeto con el que colisiona
-        if (!other.CompareTag("Player"))
+        if (other.CompareTag("Enemigos"))
         {
             // Si el proyectil colisiona con otro objeto (que no sea el jugador),
             // puedes agregar lógica adicional aquí (por ejemplo, hacer que el enemigo tome daño).
 
-            // Destruir el proyectil al colisionar con un objeto que no es el jugador
+            Debug.Log("Golpeo al enemigo");
+            other.GetComponent<EnemyController>().recibioDaño = true;
             Destroy(gameObject);
         }
     }
@@ -27,6 +30,14 @@ public class ProjectileController : MonoBehaviour
     {
         // Método de inicialización, puedes añadir lógica aquí según tus necesidades
     }
+    
+    void Destruir()
+    {
+        timeDestroy += 1 * Time.deltaTime;
+
+        if (timeDestroy >= timeLimit)
+        {
+            Destroy(gameObject);
+        }
+    }
 }
-
-

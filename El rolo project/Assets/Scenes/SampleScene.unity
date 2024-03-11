@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 299117613}
   m_Layer: 0
   m_Name: Robob
-  m_TagString: Untagged
+  m_TagString: Enemigos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -224,7 +224,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -237,7 +237,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &299117611
 CapsuleCollider2D:
@@ -310,15 +310,16 @@ MonoBehaviour:
   PJ: {fileID: 770568370}
   distancia: 0
   distanciaLimite: 2
+  rutina: 0
   cronometro: 0
   cronoregulador: 3
   rangoAtaque: 0.5
-  puedeAtacar: 0
-  direccionGiro: 0
   hit: {fileID: 1340135649}
-  rutina: 0
+  puedeAtacar: 0
   velocidad: 0.5
   velocidadLimite: 1
+  direccionGiro: 0
+  "recibioDa\xF1o": 0
   estado: 0
 --- !u!1 &492150327
 GameObject:
@@ -450,6 +451,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &492750861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 492750862}
+  m_Layer: 3
+  m_Name: Lanzador
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &492750862
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492750861}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1, y: 0.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 770568370}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,7 +786,8 @@ Transform:
   m_LocalPosition: {x: -1.05, y: -1.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 492750862}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &770568371
@@ -810,8 +843,8 @@ MonoBehaviour:
   dashDuration: 0.5
   dashCooldown: 1
   dashDistance: 0.2
-  firePoint: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  firePoint: {fileID: 492750862}
+  projectilePrefab: {fileID: 1248253077890091498, guid: 13414f9140e685649b5efbae8338ae26, type: 3}
 --- !u!50 &770568373
 Rigidbody2D:
   serializedVersion: 4

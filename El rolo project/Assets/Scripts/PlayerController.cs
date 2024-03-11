@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -44,11 +45,11 @@ public class PlayerController : MonoBehaviour
 
         if(moveInput < 0 && lookRigth)
         {
-            Giro();
+            Giro(moveInput);
         }
         else if (moveInput > 0 && !lookRigth)
         {
-            Giro();
+            Giro(moveInput);
         }
 
         // Verificar el dash
@@ -115,11 +116,17 @@ public class PlayerController : MonoBehaviour
     }
 
     //Gira al personaje
-    void Giro()
+    void Giro(float mov)
     {
         lookRigth = !lookRigth;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1; 
-        transform.localScale = scale;
+
+        if (mov < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else if (mov > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 }
