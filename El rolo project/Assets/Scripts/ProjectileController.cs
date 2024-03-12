@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Video;
 
 public class ProjectileController : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class ProjectileController : MonoBehaviour
 
             Debug.Log("Golpeo al enemigo");
             other.GetComponent<EnemyController>().recibioDaño = true;
+            other.GetComponent<EnemyController>().vida--;
             Destroy(gameObject);
         }
     }

@@ -22,11 +22,15 @@ public class EnemyController : MonoBehaviour
     public Collider2D hit;
     [SerializeField] private bool puedeAtacar;
 
+    [Header("Variables de daño recibido")]
+    public int vida;
+    public bool recibioDaño;
+    [SerializeField] private float empuje;
+
     [Header("Variables generales")]
     public float velocidad;
     public float velocidadLimite;
     [SerializeField] private int direccionGiro;
-    public bool recibioDaño;
     public EstadoEnemigo estado = EstadoEnemigo.Patrullando;
     private Animator animator;
 
@@ -40,6 +44,7 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         distancia = Vector2.Distance(transform.position, PJ.position);
+        Salud();
 
         if (!recibioDaño)
         {
@@ -146,16 +151,42 @@ public class EnemyController : MonoBehaviour
 
     public void Herido()
     {
+        animator.SetBool("damaged", recibioDaño);
         animator.SetBool("walk", false);
         animator.SetBool("atack", false);
-        animator.SetBool("damaged", true);
+
+        if (transform.position.x < PJ.position.x)
+        {
+            direccionGiro = 0;
+        }
+        else
+        {
+            direccionGiro = 1;
+        }
+
+        switch (direccionGiro)
+        {
+            case 0:
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+                transform.Translate(Vector3.left * empuje * Time.deltaTime, Space.World);
+                break;
+
+            case 1:
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                transform.Translate(Vector3.right * empuje * Time.deltaTime, Space.World);
+                break;
+        }
+    }
+
+    public void Salud()
+    {
+        if (vida <= 0) transform.gameObject.SetActive(false);
     }
 
     public void FinHerido()
     {
         recibioDaño = false;
-        animator.SetBool("damaged", false);
-        estado = EstadoEnemigo.Persiguiendo;
+        animator.SetBool("damaged", recibioDaño);
     }
 
     public void Atacar()

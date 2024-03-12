@@ -316,10 +316,12 @@ MonoBehaviour:
   rangoAtaque: 0.5
   hit: {fileID: 1340135649}
   puedeAtacar: 0
+  vida: 10
+  "recibioDa\xF1o": 0
+  empuje: 0.2
   velocidad: 0.5
   velocidadLimite: 1
   direccionGiro: 0
-  "recibioDa\xF1o": 0
   estado: 0
 --- !u!1 &492150327
 GameObject:
