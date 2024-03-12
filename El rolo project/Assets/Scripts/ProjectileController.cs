@@ -15,12 +15,8 @@ public class ProjectileController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Comprobar la etiqueta del objeto con el que colisiona
         if (other.CompareTag("Enemigos"))
         {
-            // Si el proyectil colisiona con otro objeto (que no sea el jugador),
-            // puedes agregar lógica adicional aquí (por ejemplo, hacer que el enemigo tome daño).
-
             Debug.Log("Golpeo al enemigo");
             other.GetComponent<EnemyController>().recibioDaño = true;
             other.GetComponent<EnemyController>().vida--;

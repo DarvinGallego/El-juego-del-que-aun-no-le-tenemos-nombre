@@ -9,6 +9,21 @@ public class HitEnemy : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Daño");
+            PlayerController Player = collision.GetComponent<PlayerController>();
+
+            Player.fueHerido = true;
+            Player.vidaPJ--;
+
+            if(Player.transform.position.x > transform.position.x)
+            {
+                Player.transform.rotation = Quaternion.Euler(0, 180, 0);
+                Player.empujePJ *= -1;
+            }
+            else
+            {
+                Player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                Player.empujePJ *= 1;
+            }
         }
     }
 }
