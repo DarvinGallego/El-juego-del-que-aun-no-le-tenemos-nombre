@@ -9,15 +9,15 @@ using UnityEngine.Rendering;
 public class PlayerController : MonoBehaviour
 {
     [Header("Variables de salto y movimiento y dash")]
-    public float runSpeed = 2;
-    public float jumpForce = 5;
+    public float runSpeed;
+    public float jumpForce;
     private bool isGrounded;
 
     [Header("Variables de dash")]
-    public float dashSpeed = 10;
-    public float dashDuration = 0.5f;
-    public float dashCooldown = 1.0f;
-    public float dashDistance = 5.0f;
+    public float dashSpeed;
+    public float dashDuration;
+    public float dashCooldown;
+    public float dashDistance;
     private bool isDashing;
     private float dashTimeLeft;
     private float lastDashTime;
@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
     [Header("Proyectil")]
     public Transform firePoint;
     public GameObject projectilePrefab;
+    [SerializeField] private float disparoCD;
+    [SerializeField] private bool puedeDisparar;
 
     void Start()
     {
@@ -73,7 +75,6 @@ public class PlayerController : MonoBehaviour
             {
                 Giro(moveInput);
             }
-
             Dash(moveInput);
             Shoot();
         }
@@ -127,10 +128,11 @@ public class PlayerController : MonoBehaviour
     //Dispara 
     void Shoot()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z) && puedeDisparar)
         {
             if (projectilePrefab != null && firePoint != null)
             {
+                puedeDisparar = false;
                 GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 
                 // Asegúrate de que el proyectil tenga un script ProjectileController adjunto
@@ -139,6 +141,8 @@ public class PlayerController : MonoBehaviour
                 {
                     projectileController.Initialize(); // Inicializar el proyectil
                 }
+
+                StartCoroutine(DisparoCD());
             }
             else
             {
@@ -196,5 +200,11 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnTime);
         murio = false;
+    }
+
+    IEnumerator DisparoCD()
+    {
+        yield return new WaitForSeconds(disparoCD);
+        puedeDisparar = true;
     }
 }

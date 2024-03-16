@@ -22,6 +22,13 @@ public class ProjectileController : MonoBehaviour
             other.GetComponent<EnemyController>().vida--;
             Destroy(gameObject);
         }
+        else if (other.CompareTag("Player"))
+        {
+            Debug.Log("Golpeo al jugador");
+            other.GetComponent<PlayerController>().fueHerido = true;
+            other.GetComponent<PlayerController>().vidaPJ--;
+            Destroy(gameObject);
+        }
     }
 
     public void Initialize()

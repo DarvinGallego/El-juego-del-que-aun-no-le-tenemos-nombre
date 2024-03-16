@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour
     [Range(0, 2)][SerializeField] private float distanciaLimite;
 
     [Header("Variables de tiempo de patrullaje")]
-    public int rutina;
+    [SerializeField] private int rutina;
     [SerializeField] private float cronometro;
 
     [Header("Variables de ataque")]

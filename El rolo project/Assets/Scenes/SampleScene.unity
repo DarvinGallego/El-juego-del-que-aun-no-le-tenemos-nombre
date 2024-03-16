@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 299117611}
   - component: {fileID: 299117610}
   - component: {fileID: 299117613}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Robob
   m_TagString: Enemigos
   m_Icon: {fileID: 0}
@@ -461,7 +461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 492750862}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Lanzador
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -477,7 +477,7 @@ Transform:
   m_GameObject: {fileID: 492750861}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0.15, z: 0}
+  m_LocalPosition: {x: 0.112, y: 0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -716,7 +716,7 @@ GameObject:
   - component: {fileID: 770568371}
   - component: {fileID: 770568373}
   - component: {fileID: 770568372}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: LeroyFake
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -854,6 +854,8 @@ MonoBehaviour:
   empujePJ: {x: 3, y: 3}
   firePoint: {fileID: 492750862}
   projectilePrefab: {fileID: 1248253077890091498, guid: 13414f9140e685649b5efbae8338ae26, type: 3}
+  disparoCD: 0.5
+  puedeDisparar: 1
 --- !u!50 &770568373
 Rigidbody2D:
   serializedVersion: 4
@@ -981,7 +983,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 0}
+  m_LocalScale: {x: 5, y: 1.2, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1783714917}
