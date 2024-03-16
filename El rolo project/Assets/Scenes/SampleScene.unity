@@ -311,8 +311,7 @@ MonoBehaviour:
   distancia: 0
   distanciaLimite: 2
   rutina: 0
-  cronometro: 0
-  cronoregulador: 3
+  cronometro: 2
   rangoAtaque: 0.5
   hit: {fileID: 1340135649}
   puedeAtacar: 0
@@ -846,14 +845,13 @@ MonoBehaviour:
   dashCooldown: 1
   dashDistance: 0.2
   vidaPJMax: 5
-  vidaPJ: 5
+  vidaPJ: 0
   fueHerido: 0
   spawn: {fileID: 1402988743}
-  respawnCD: 3
-  respawnTime: 0
+  respawnTime: 3
   murio: 0
-  empujePJ: 2
   lookRigth: 1
+  empujePJ: {x: 3, y: 3}
   firePoint: {fileID: 492750862}
   projectilePrefab: {fileID: 1248253077890091498, guid: 13414f9140e685649b5efbae8338ae26, type: 3}
 --- !u!50 &770568373
@@ -1151,7 +1149,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1783714916}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 039f7b48237c73443ac3c03710200b16, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

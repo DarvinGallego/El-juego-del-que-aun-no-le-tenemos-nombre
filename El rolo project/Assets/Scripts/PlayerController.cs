@@ -30,15 +30,14 @@ public class PlayerController : MonoBehaviour
 
     [Header("Variables de respawn")]
     public Transform spawn;
-    public float respawnCD;
     [SerializeField] private float respawnTime;
     public bool murio;
 
     [Header("Variables Generales")]
-    public float empujePJ;
+    public bool lookRigth;
+    public Vector2 empujePJ;
     private Animator animator;
     private Rigidbody2D rb2D;
-    [SerializeField] private bool lookRigth;
 
     [Header("Proyectil")]
     public Transform firePoint;
@@ -48,6 +47,8 @@ public class PlayerController : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        vidaPJ = vidaPJMax;
     }
 
     void Update()
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviour
         Vida();
         Respawn();
 
-        if (!fueHerido && !murio) 
+        if (!fueHerido && !murio)
         {
             float moveInput = Input.GetAxis("Horizontal");
             animator.SetFloat("isRunning", Math.Abs(moveInput));
@@ -164,7 +165,7 @@ public class PlayerController : MonoBehaviour
     void Golpeado()
     {
         animator.SetBool("isDamaged", fueHerido);
-        transform.Translate(Vector3.left * empujePJ * Time.deltaTime, Space.World);
+        transform.Translate(new Vector3(Vector3.left.x * empujePJ.x, empujePJ.y, 0f) * Time.deltaTime, Space.World);
     }
 
     public void GolpeadoFin()
@@ -187,14 +188,13 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = spawn.position;
             vidaPJ = vidaPJMax;
-
-            respawnTime += 1 * Time.deltaTime;
-
-            if (respawnTime > respawnCD)
-            {
-                murio = false;
-                respawnTime = 0;
-            }
+            StartCoroutine(RespawnCD());
         }
+    }
+
+    IEnumerator RespawnCD()
+    {
+        yield return new WaitForSeconds(respawnTime);
+        murio = false;
     }
 }

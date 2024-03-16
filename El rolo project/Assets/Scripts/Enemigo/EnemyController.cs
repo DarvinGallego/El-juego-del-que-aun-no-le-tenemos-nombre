@@ -15,7 +15,6 @@ public class EnemyController : MonoBehaviour
     [Header("Variables de tiempo de patrullaje")]
     public int rutina;
     [SerializeField] private float cronometro;
-    [SerializeField] private float cronoregulador;
 
     [Header("Variables de ataque")]
     [Range(0, 1)][SerializeField] private float rangoAtaque;
@@ -37,7 +36,8 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();    
+        animator = GetComponent<Animator>();
+        StartCoroutine(CronometroPatrullar());
     }
 
     // Update is called once per frame
@@ -84,15 +84,7 @@ public class EnemyController : MonoBehaviour
     }
 
     public void Patrullar()
-    {
-        cronometro += 1 * Time.deltaTime;
-
-        if (cronometro >= cronoregulador)
-        {
-            rutina = Random.Range(0, 2);
-            cronometro = 0;
-        }
-
+    { 
         switch (rutina)
         {
             case 0:
@@ -205,5 +197,14 @@ public class EnemyController : MonoBehaviour
         hit.enabled = false;
         animator.SetBool("walk", true);
         animator.SetBool("atack", false);
+    }
+
+    IEnumerator CronometroPatrullar()
+    {
+        while (true)
+        {
+            rutina = Random.Range(0, 2);
+            yield return new WaitForSeconds(cronometro);
+        }
     }
 }

@@ -14,15 +14,33 @@ public class HitEnemy : MonoBehaviour
             Player.fueHerido = true;
             Player.vidaPJ--;
 
-            if(Player.transform.position.x > transform.position.x)
+            if (Player.transform.position.x > transform.position.x)
             {
                 Player.transform.rotation = Quaternion.Euler(0, 180, 0);
-                Player.empujePJ *= -1;
+                Player.lookRigth = false;
+
+                if (Player.empujePJ.x < 0)
+                {
+                    Player.empujePJ.x *= 1;
+                }
+                else
+                {
+                    Player.empujePJ.x *= -1;
+                }
             }
             else
             {
                 Player.transform.rotation = Quaternion.Euler(0, 0, 0);
-                Player.empujePJ *= 1;
+                Player.lookRigth = true;
+
+                if (Player.empujePJ.x < 0)
+                {
+                    Player.empujePJ.x *= -1;
+                }
+                else
+                {
+                    Player.empujePJ.x *= 1;
+                }
             }
         }
     }
