@@ -36,14 +36,18 @@ public class PlayerController : MonoBehaviour
     [Header("Variables Generales")]
     public bool lookRigth;
     public Vector2 empujePJ;
+    public Collider2D hit;
     private Animator animator;
     private Rigidbody2D rb2D;
 
     [Header("Proyectil")]
+    public int municionMax;
+    public int municion;
     public Transform firePoint;
     public GameObject projectilePrefab;
     [SerializeField] private float disparoCD;
     [SerializeField] private bool puedeDisparar;
+    public bool tieneMunicion;
 
     void Start()
     {
@@ -59,6 +63,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Ground", isGrounded);
         animator.SetFloat("isJumping", rb2D.velocity.y);
 
+        MunicionPJ();
         Vida();
         Respawn();
 
@@ -69,14 +74,15 @@ public class PlayerController : MonoBehaviour
 
             if (moveInput < 0 && lookRigth)
             {
-                Giro(moveInput);
+                Giro();
             }
             else if (moveInput > 0 && !lookRigth)
             {
-                Giro(moveInput);
+                Giro();
             }
             Dash(moveInput);
             Shoot();
+            Hit();
         }
         else if (fueHerido)
         {
@@ -118,22 +124,35 @@ public class PlayerController : MonoBehaviour
             rb2D.velocity = new Vector2(MoveInput * runSpeed, rb2D.velocity.y);
 
             // Salto
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            if (Input.GetButtonDown("Jump") && isGrounded)
             {
                 rb2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             }
         }
     }
 
+    void Hit()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            hit.enabled = true;
+        }
+        else
+        {
+            hit.enabled = false;
+        }
+    }
+
     //Dispara 
     void Shoot()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && puedeDisparar)
+        if (Input.GetKeyDown(KeyCode.LeftControl) && puedeDisparar && tieneMunicion)
         {
             if (projectilePrefab != null && firePoint != null)
             {
                 puedeDisparar = false;
                 GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+                municion--;
 
                 // Asegúrate de que el proyectil tenga un script ProjectileController adjunto
                 ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
@@ -151,25 +170,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void MunicionPJ()
+    {
+        if(municion <= 0)
+        {
+            tieneMunicion = false;
+        }
+        else
+        {
+            tieneMunicion = true;
+        }
+    }
+
     //Gira al personaje
-    void Giro(float mov)
+    public void Giro()
     {
         lookRigth = !lookRigth;
-
-        if (mov < 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
-        else if (mov > 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y + 180, 0);
     }
 
     void Golpeado()
     {
         animator.SetBool("isDamaged", fueHerido);
-        transform.Translate(new Vector3(Vector3.left.x * empujePJ.x, empujePJ.y, 0f) * Time.deltaTime, Space.World);
+        transform.Translate(new Vector2(Vector2.left.x * empujePJ.x, empujePJ.y) * Time.deltaTime, Space.World);
     }
 
     public void GolpeadoFin()

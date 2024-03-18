@@ -16,12 +16,23 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private int rutina;
     [SerializeField] private float cronometro;
 
+    [Header("Variables de patrullaje en plataformas")]
+    public LayerMask abajo;
+    public LayerMask enfrente;
+    public float distanciaAbajo;
+    public float distanciaEnfrente;
+    public Transform NocionA;
+    public Transform NocionE;
+    public bool infoAbajo;
+    public bool infoEnfrente;
+
     [Header("Variables de ataque")]
     [Range(0, 1)][SerializeField] private float rangoAtaque;
     public Collider2D hit;
     [SerializeField] private bool puedeAtacar;
 
     [Header("Variables de daño recibido")]
+    public int vidaMax;
     public int vida;
     public bool recibioDaño;
     [SerializeField] private float empuje;
@@ -30,6 +41,7 @@ public class EnemyController : MonoBehaviour
     public float velocidad;
     public float velocidadLimite;
     [SerializeField] private int direccionGiro;
+    [SerializeField] private bool lookLeft;
     public EstadoEnemigo estado = EstadoEnemigo.Patrullando;
     private Animator animator;
 
@@ -43,6 +55,8 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        infoEnfrente = Physics2D.Raycast(NocionE.position, transform.right * -1, distanciaEnfrente, enfrente);
+        infoAbajo = Physics2D.Raycast(NocionA.position, transform.up * -1, distanciaAbajo, abajo);
         distancia = Vector2.Distance(transform.position, PJ.position);
         Salud();
 
@@ -84,33 +98,41 @@ public class EnemyController : MonoBehaviour
     }
 
     public void Patrullar()
-    { 
-        switch (rutina)
+    {
+        if (infoEnfrente || !infoAbajo)
         {
-            case 0:
-                animator.SetBool("walk", false);
-                break;
+            lookLeft = !lookLeft;
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y + 180, 0);
+        }
+        else
+        {
+            switch (rutina)
+            {
+                case 0:
+                    animator.SetBool("walk", false);
+                    break;
 
-            case 1:
-                direccionGiro = Random.Range(0, 2);
-                rutina++;
-                break;
+                case 1:
+                    lookLeft = Random.value < 0.5f;
+                    rutina++;
+                    break;
 
-            case 2:
-                switch (direccionGiro)
-                {
-                    case 0:
-                        transform.rotation = Quaternion.Euler(0, 0, 0);
-                        transform.Translate(Vector3.left * velocidad * Time.deltaTime);
-                        break;
+                case 2:
+                    switch (lookLeft)
+                    {
+                        case true:
+                            transform.rotation = Quaternion.Euler(0, 0, 0);
+                            transform.Translate(Vector3.left * velocidad * Time.deltaTime);
+                            break;
 
-                    case 1:
-                        transform.rotation = Quaternion.Euler(0, 180, 0);
-                        transform.Translate(Vector3.left * velocidad * Time.deltaTime);
-                        break;
-                }
-                animator.SetBool("walk", true);
-                break;
+                        case false:
+                            transform.rotation = Quaternion.Euler(0, 180, 0);
+                            transform.Translate(Vector3.left * velocidad * Time.deltaTime);
+                            break;
+                    }
+                    animator.SetBool("walk", true);
+                    break;
+            }
         }
     }
 
@@ -118,21 +140,21 @@ public class EnemyController : MonoBehaviour
     {
         if (transform.position.x < PJ.position.x)
         {
-            direccionGiro = 0;
+            lookLeft = false;
         }
         else
         {
-            direccionGiro = 1;
+            lookLeft = true;
         }
 
-        switch (direccionGiro)
+        switch (lookLeft)
         {
-            case 0:
+            case false:
                 transform.rotation = Quaternion.Euler(0, 180, 0);
                 transform.position = Vector2.MoveTowards(transform.position, PJ.position, velocidadLimite * Time.deltaTime);
                 break;
 
-            case 1:
+            case true:
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 transform.position = Vector2.MoveTowards(transform.position, PJ.position, velocidadLimite * Time.deltaTime);
                 break;
@@ -149,21 +171,21 @@ public class EnemyController : MonoBehaviour
 
         if (transform.position.x < PJ.position.x)
         {
-            direccionGiro = 0;
+            lookLeft = false;
         }
         else
         {
-            direccionGiro = 1;
+            lookLeft = true;
         }
 
-        switch (direccionGiro)
+        switch (lookLeft)
         {
-            case 0:
+            case false:
                 transform.rotation = Quaternion.Euler(0, 180, 0);
                 transform.Translate(Vector3.left * empuje * Time.deltaTime, Space.World);
                 break;
 
-            case 1:
+            case true:
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 transform.Translate(Vector3.right * empuje * Time.deltaTime, Space.World);
                 break;
@@ -172,7 +194,11 @@ public class EnemyController : MonoBehaviour
 
     public void Salud()
     {
-        if (vida <= 0) transform.gameObject.SetActive(false);
+        if (vida <= 0)
+        {
+            transform.gameObject.SetActive(false);
+            vida = vidaMax;
+        }
     }
 
     public void FinHerido()
@@ -206,5 +232,13 @@ public class EnemyController : MonoBehaviour
             rutina = Random.Range(0, 2);
             yield return new WaitForSeconds(cronometro);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(NocionA.transform.position, NocionA.transform.position + transform.up * -1 * distanciaAbajo);
+        Gizmos.DrawLine(NocionE.transform.position, NocionE.transform.position + transform.right * -1 * distanciaEnfrente);
+
     }
 }

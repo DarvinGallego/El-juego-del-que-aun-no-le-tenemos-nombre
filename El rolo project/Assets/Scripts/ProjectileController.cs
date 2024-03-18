@@ -1,16 +1,16 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Video;
 
 public class ProjectileController : MonoBehaviour
 {
     public float speed;
-    [SerializeField] private float timeLimit;
     [SerializeField] private float timeDestroy;
 
     void Update()
     {
         transform.Translate(Vector2.right * speed * Time.deltaTime);
-        Destruir();
+        StartCoroutine(Destruir());
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -29,20 +29,17 @@ public class ProjectileController : MonoBehaviour
             other.GetComponent<PlayerController>().vidaPJ--;
             Destroy(gameObject);
         }
+        Destroy(gameObject);
     }
 
     public void Initialize()
     {
         // Método de inicialización, puedes añadir lógica aquí según tus necesidades
     }
-    
-    void Destruir()
-    {
-        timeDestroy += 1 * Time.deltaTime;
 
-        if (timeDestroy >= timeLimit)
-        {
-            Destroy(gameObject);
-        }
+    IEnumerator Destruir()
+    {
+        yield return new WaitForSeconds(timeDestroy);
+        Destroy(gameObject);
     }
 }
