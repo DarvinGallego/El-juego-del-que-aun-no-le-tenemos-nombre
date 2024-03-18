@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
 
     void Hit()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             hit.enabled = true;
         }
@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
     //Dispara 
     void Shoot()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && puedeDisparar && tieneMunicion)
+        if (Input.GetKeyDown(KeyCode.L) && puedeDisparar && tieneMunicion)
         {
             if (projectilePrefab != null && firePoint != null)
             {
