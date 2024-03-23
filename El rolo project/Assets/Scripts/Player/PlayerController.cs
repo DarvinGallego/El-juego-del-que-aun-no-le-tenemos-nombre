@@ -24,8 +24,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 dashDirection;
 
     [Header("Variables de vida")]
-    public int vidaPJMax;
-    public int vidaPJ;
+    public float vidaPJMax;
+    public float vidaPJ;
     public bool fueHerido;
 
     [Header("Variables de respawn")]
@@ -172,13 +172,18 @@ public class PlayerController : MonoBehaviour
 
     void MunicionPJ()
     {
-        if(municion <= 0)
+        if (municion <= 0)
         {
             tieneMunicion = false;
         }
         else
         {
             tieneMunicion = true;
+        }
+
+        if (municion > municionMax)
+        {
+            municion = municionMax;
         }
     }
 
