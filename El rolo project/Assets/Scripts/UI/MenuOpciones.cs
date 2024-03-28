@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MenuOpciones : MonoBehaviour
 {
@@ -23,6 +24,26 @@ public class MenuOpciones : MonoBehaviour
     [SerializeField] private TMP_Dropdown calidadDropdown;
 
     [SerializeField] private Toggle pantallaToggle;
+    [SerializeField] public GameObject panelMenu;
+
+    //El patron singleton ayuda a tener un unico script que guarde un dato unico que no pueda ser 
+    //reescrito por otro script, sino que este guardara los datos que sean necesarios para funcionar
+    #region singleton
+    public static MenuOpciones Instance;
+
+    private void Awake()
+    {
+        //Si la instancia existe y no es esta, se destruye de inmediato.
+        if (Instance != null && Instance != this)
+        {
+            DestroyImmediate(gameObject);
+            return;
+        }
+        Instance = this;
+        //Solo en caso de necesitar que el objeto viva en varias escenas.
+        DontDestroyOnLoad(gameObject);
+    }
+    #endregion
 
     private void Start()
     {
