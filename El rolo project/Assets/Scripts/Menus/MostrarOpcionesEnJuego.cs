@@ -27,7 +27,6 @@ public class MostrarOpcionesEnJuego : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             MenuOP.SetActive(false);
-
             MenuOP.GetComponentInParent<MenuInicial>().RegresoPantallaInicio();
         }
     }

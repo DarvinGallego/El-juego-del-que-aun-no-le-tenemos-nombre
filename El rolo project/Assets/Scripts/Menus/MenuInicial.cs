@@ -10,6 +10,7 @@ public class MenuInicial : MonoBehaviour
     //permite entrar al juego y salir de este mismo
     public void Jugar()
     {
+        //Carga la primera escena, en este caso el primer nivel (Provisional hasta confirmar mas niveles)
         SceneManager.LoadScene(1);
     }
     public void Salir()
