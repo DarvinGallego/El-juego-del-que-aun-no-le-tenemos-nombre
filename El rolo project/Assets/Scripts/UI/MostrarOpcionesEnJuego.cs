@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MostrarOpcionesEnJuego : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class MostrarOpcionesEnJuego : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             MenuOP.SetActive(false);
+
+            MenuOP.GetComponentInParent<MenuInicial>().RegresoPantallaInicio();
         }
     }
 }

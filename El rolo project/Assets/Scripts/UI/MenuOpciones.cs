@@ -9,21 +9,29 @@ using UnityEngine.SceneManagement;
 
 public class MenuOpciones : MonoBehaviour
 {
+    [Header("Variables de volumen")]
     [SerializeField] private AudioMixer BGM;
     [SerializeField] private Slider BGMSlider;
 
+    [Space(3)]
     [SerializeField] private AudioMixer SFX;
     [SerializeField] private Slider SFXSlider;
 
+    [Header("Variables de brillo")]
     [SerializeField] private Image brillo;
     [SerializeField] private Slider brilloSlider;
 
-    [SerializeField] private Resolution[] resoluciones;
+    [Header("Variables de resolucion, calidad y pantalla")]
     [SerializeField] private TMP_Dropdown resolucionDropdown;
+    [SerializeField] private Resolution[] resoluciones;
 
+    [Space(3)]
     [SerializeField] private TMP_Dropdown calidadDropdown;
 
+    [Space(3)]
     [SerializeField] private Toggle pantallaToggle;
+
+    [Header("Panel de menu")]
     [SerializeField] public GameObject panelMenu;
 
     //El patron singleton ayuda a tener un unico script que guarde un dato unico que no pueda ser 
