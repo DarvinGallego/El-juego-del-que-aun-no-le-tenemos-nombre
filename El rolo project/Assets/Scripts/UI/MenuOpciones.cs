@@ -34,6 +34,14 @@ public class MenuOpciones : MonoBehaviour
     [Header("Panel de menu")]
     [SerializeField] public GameObject panelMenu;
 
+    [Header("Opciones por defecto")]
+    [SerializeField] private float SFXDefault = 0f;
+    [SerializeField] private float BGMDefault = 0f;
+    [SerializeField] private float brilloDefault = 0f;
+    [SerializeField] private int resolucionDefault = 3;
+    [SerializeField] private int calidadDefault = 0;
+    [SerializeField] private bool pantallaDefault = true;
+
     //El patron singleton ayuda a tener un unico script que guarde un dato unico que no pueda ser 
     //reescrito por otro script, sino que este guardara los datos que sean necesarios para funcionar
     #region singleton
@@ -55,12 +63,7 @@ public class MenuOpciones : MonoBehaviour
 
     private void Start()
     {
-        ConfirmarPantallaCompleta();
-        ResolucionGrafica();
-        CalidadGrafica();
-        CargarVolumenBGM();
-        CargarVolumenSFX();
-        CargarBrillo();
+        CargarConfiguracion();
     }
 
     public void ActivarPantallaCompleta(bool PC)
@@ -140,13 +143,29 @@ public class MenuOpciones : MonoBehaviour
         resolucionDropdown.RefreshShownValue();
 
         //Carga la resolucion, iniciara por defecto con la resolucion asignada
-        resolucionDropdown.value = PlayerPrefs.GetInt("ValorResolucion", resolucionActual);
+        if (PlayerPrefs.HasKey("ValorResolucion"))
+        {
+            resolucionDropdown.value = PlayerPrefs.GetInt("ValorResolucion", resolucionActual);
+        }
+        else
+        {
+            resolucionDropdown.value = resolucionDefault;
+            PlayerPrefs.SetInt("ValorResolucion", resolucionDefault);
+        }
     }
 
     public void CalidadGrafica()
     {
         //Carga la calidad
-        calidadDropdown.value = PlayerPrefs.GetInt("ValorCalidad");
+        if (PlayerPrefs.HasKey("ValorCalidad"))
+        {
+            calidadDropdown.value = PlayerPrefs.GetInt("ValorCalidad");
+        }
+        else
+        {
+            calidadDropdown.value = calidadDefault;
+            PlayerPrefs.SetInt("ValorCalidad", calidadDefault);
+        }
         CambiarCalidad();
     }
 
@@ -163,23 +182,74 @@ public class MenuOpciones : MonoBehaviour
         }
     }
 
+    public void RestablecePantallaCompleta()
+    {   
+        //Restablece la pantalla completa
+        if (pantallaToggle.isOn == false)
+        {
+            Screen.fullScreen = pantallaDefault;
+            pantallaToggle.isOn = pantallaDefault;
+        }
+    }
+
     public void CargarVolumenSFX()
     {
         //Carga el volumen de los efectos de sonido
-        SFXSlider.value = PlayerPrefs.GetFloat("VolSFX");
+        if (PlayerPrefs.HasKey("VolSFX"))
+        {
+            SFXSlider.value = PlayerPrefs.GetFloat("VolSFX");
+        }
+        else
+        {
+            SFXSlider.value = SFXDefault;
+            PlayerPrefs.SetFloat("VolSFX", SFXDefault);
+        }
         VolumenSFX();
     }
     public void CargarVolumenBGM()
     {
         //Carga el volumen de la ambientacion
-        BGMSlider.value = PlayerPrefs.GetFloat("VolBGM");
+        if (PlayerPrefs.HasKey("VolBGM"))
+        {
+            BGMSlider.value = PlayerPrefs.GetFloat("VolBGM");
+        }
+        else
+        {
+            BGMSlider.value = BGMDefault;
+            PlayerPrefs.SetFloat("VolBGM", BGMDefault);
+        }
         VolumenBGM();
     }
 
     public void CargarBrillo()
     {
         //Carga el valor del alpha de la imagen que da el brillo
-        brilloSlider.value = PlayerPrefs.GetFloat("AlfaB");
+        if (PlayerPrefs.HasKey("AlfaB"))
+        {
+            brilloSlider.value = PlayerPrefs.GetFloat("AlfaB");
+        }
+        else
+        {
+            brilloSlider.value = brilloDefault;
+            PlayerPrefs.SetFloat("AlfaB", brilloDefault);
+        }
         Brillo();
+    }
+
+    public void CargarConfiguracion() 
+    {
+        ConfirmarPantallaCompleta();
+        ResolucionGrafica();
+        CalidadGrafica();
+        CargarVolumenBGM();
+        CargarVolumenSFX();
+        CargarBrillo();
+    } 
+
+    public void ResetDefaultValues()
+    {
+        PlayerPrefs.DeleteAll();
+        CargarConfiguracion();
+        RestablecePantallaCompleta();
     }
 }
