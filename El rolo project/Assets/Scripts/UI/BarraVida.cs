@@ -15,6 +15,6 @@ public class BarraVida : MonoBehaviour
 
     void Update()
     {
-        barraVida.fillAmount = player.vidaPJ/player.vidaPJMax;
+        barraVida.fillAmount = player.vidaPJ / player.vidaPJMax;
     }
 }

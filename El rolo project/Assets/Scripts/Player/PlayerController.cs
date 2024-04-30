@@ -49,8 +49,6 @@ public class PlayerController : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-
-        vidaPJ = vidaPJMax;
     }
 
     void Update()
@@ -83,6 +81,21 @@ public class PlayerController : MonoBehaviour
         else if (fueHerido)
         {
             Golpeado();
+        }
+
+        //guardado binario
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            SaveManager.SavePlayerData(this);
+            Debug.Log("Archivos guardados");
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            DataPlayer dataPlayer = SaveManager.LoadPlayerData();
+            vidaPJ = dataPlayer.vida;
+            municion = dataPlayer.municion;
+            transform.position = new Vector3(dataPlayer.posicion[0], dataPlayer.posicion[1], dataPlayer.posicion[2]);
+            Debug.Log("Datos cargados");
         }
     }
 
@@ -132,6 +145,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             hit.enabled = true;
+            animator.SetTrigger("isAttacking");
         }
         else
         {
@@ -144,6 +158,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L) && puedeDisparar && tieneMunicion)
         {
+            animator.SetTrigger("isShooting");
             if (projectilePrefab != null && firePoint != null)
             {
                 puedeDisparar = false;
@@ -194,6 +209,7 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("isDamaged", fueHerido);
         transform.Translate(new Vector2(Vector2.left.x * empujePJ.x, empujePJ.y) * Time.deltaTime, Space.World);
+        //rb2D.AddForce(empujePJ, ForceMode2D.Force);
     }
 
     public void GolpeadoFin()
