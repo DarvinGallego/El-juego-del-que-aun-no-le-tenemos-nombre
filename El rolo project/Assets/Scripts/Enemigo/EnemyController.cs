@@ -31,10 +31,10 @@ public class EnemyController : MonoBehaviour
     public Collider2D hit;
     [SerializeField] private bool puedeAtacar;
 
-    [Header("Variables de daño recibido")]
+    [Header("Variables de daÃ±o recibido")]
     public int vidaMax;
     public int vida;
-    public bool recibioDaño;
+    public bool recibioDaÃ±o;
     [SerializeField] private float empuje;
 
     [Header("Variables generales")]
@@ -60,7 +60,7 @@ public class EnemyController : MonoBehaviour
         distancia = Vector2.Distance(transform.position, PJ.position);
         Salud();
 
-        if (!recibioDaño)
+        if (!recibioDaÃ±o)
         {
             if (distancia < distanciaLimite && distancia > rangoAtaque)
             {
@@ -165,7 +165,7 @@ public class EnemyController : MonoBehaviour
 
     public void Herido()
     {
-        animator.SetBool("damaged", recibioDaño);
+        animator.SetBool("damaged", recibioDaÃ±o);
         animator.SetBool("walk", false);
         animator.SetBool("atack", false);
 
@@ -203,8 +203,8 @@ public class EnemyController : MonoBehaviour
 
     public void FinHerido()
     {
-        recibioDaño = false;
-        animator.SetBool("damaged", recibioDaño);
+        recibioDaÃ±o = false;
+        animator.SetBool("damaged", recibioDaÃ±o);
     }
 
     public void Atacar()
@@ -213,12 +213,12 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("atack", true);
     }
     
-    public void PuñoInicio()
+    public void PuÃ±oInicio()
     {
         hit.enabled = true;
     }
 
-    public void PuñoFin()
+    public void PuÃ±oFin()
     {
         hit.enabled = false;
         animator.SetBool("walk", true);

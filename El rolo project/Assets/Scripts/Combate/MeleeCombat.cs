@@ -8,7 +8,7 @@ public class MeleeCombat: MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("El jugador recibio daño");
+            Debug.Log("El jugador recibio daÃ±o");
             PlayerController Player = collision.GetComponent<PlayerController>();
 
             Player.fueHerido = true;
@@ -18,10 +18,10 @@ public class MeleeCombat: MonoBehaviour
         }
         else if (collision.CompareTag("Enemigos"))
         {
-            Debug.Log("El enemigo recibio daño");
+            Debug.Log("El enemigo recibio daÃ±o");
             EnemyController Enemy = collision.GetComponent<EnemyController>();
 
-            Enemy.recibioDaño = true;
+            Enemy.recibioDaÃ±o = true;
             Enemy.vida--;
         }
     }
